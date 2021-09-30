@@ -1,0 +1,104 @@
+ #include<bits/stdc++.h>
+    
+    #define ll long long int
+    #define pb push_back
+    #define ff first
+    #define ss second
+    #define lowb(a, x) ( lower_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define uppb(a, x) ( upper_bound((a).begin(), (a).end(), (x)) - (a).begin())
+    #define all(x)(x).begin(), (x).end()
+    #define show(A) for (auto i: A) cout << i << " "; cout << '\n';
+    #define show_(A, n) F(i, n) { show(A[i]) }
+    #define INF 1000000000000000000
+    
+    template<typename T,typename T1>T amax(T &a,T1 b){if(b>a)a=b;return a;}
+    template<typename T,typename T1>T amin(T &a,T1 b){if(b<a)a=b;return a;}
+     
+    
+    using namespace std;
+    using ld = long double;
+    using vi = vector < int > ;
+    using mi = map < int, int > ;
+    using pi = pair < int, int > ;
+    
+    const int M = 1e9 + 7;
+  
+    
+    const int N = 1005;
+    vector<int> v[N];
+    int vis[N], isgov[N];
+    bool flag = false;
+    int cnt = 0;
+    
+    void dfs(int node)
+    {
+        vis[node] = 1;
+        cnt++;
+        if(isgov[node])
+        {
+            flag = false;
+        }
+        
+        for(auto child: v[node])
+        {
+            if(!vis[child])
+                dfs(child);
+        }
+    }
+    
+    void solve() {
+        int n, m, k;
+        cin >> n >> m >> k;
+        
+        for(int i = 0; i < k; i++)
+        {
+            int gov;
+            cin >> gov;
+            isgov[gov] = 1;
+        }
+        
+        for(int i = 0; i < m; i++)
+        {
+            int a, b;
+            cin >> a >> b;
+            v[a].pb(b);
+            v[b].pb(a);
+        }
+        
+        int ans = 0;
+        int non_gov = 0;
+        vector<int> gov;
+        
+        for(int i = 1; i <= n; i++)
+        {
+            flag = true;
+            cnt = 0;
+            if(!vis[i])
+            {
+                dfs(i);
+                if(flag)
+                   non_gov += cnt;
+                else
+                    gov.pb(cnt);
+            }
+        }
+        
+        sort(all(gov));
+        
+        gov.back() += non_gov;
+ 
+        ans = -m;
+        for (int x : gov) {
+            ans += x * 1LL * (x - 1) / 2;
+        }
+        
+        cout << ans << "\n";
+    }
+    
+    int main() {
+      int t=1;
+      //cin >> t;
+      while (t--) {
+        solve();
+      }
+    }
