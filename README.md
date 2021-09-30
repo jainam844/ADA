@@ -1,2 +1,2 @@
-# ADA
+# ADA-practicals
 ASSIGNMENT
